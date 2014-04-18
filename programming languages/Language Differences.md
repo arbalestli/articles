@@ -38,7 +38,7 @@ void SayHello();
 ```
 上面的第二个函数名可以理解为 **Add:** a **To:** b
 
-####类型
+####方法的访问方式
 - 实例方法
 实例方法（instance methods）通过类的实例调用。
 
@@ -88,6 +88,98 @@ NSString *result = [NSString stringWithFormat:@"格式化字符串",元素1,元�
 
 - Java、C#的对象管理机制与C++中`shared_ptr`类似，其内部维护了该对象的被引用次数，只有当该对象不再被引用时，GC就能回收该对象在Heap上所占的内存空间。
 - Obj-C中，通过`(strong)`和`(weak)`来表示当前指针的‘类型’，某个对象能被释放的条件是：所有对该对象的`(strong)`类型引用全部被置为`nil`。
+
+###id
+
+- Obj-C中，存在类似C#中引入的可变类型`var`，在Obj-C中通过`id`表示。实际上`id`在Obj-c中表示通用指针定义，可以指向任何类型。
+- 在Obj-C中，不推荐使用`id *`，这在C和C++中表示指向指针的指针。
+- id与var的区别是，在编译时，C#会对var的类型进行推断，而Obj-C则不会
+
+```
+NSArray * array;
+id obj=array;
+NSString str=obj;
+```
+
+上述代码在obj-c下可通过编译，因为编译器不会对id的类型进行推断
+
+而下面的代码则显式了id使用不当时可能引起的各类问题
+
+```
+@interface Vehicle
+-(void)move;
+@end
+
+@interface Ship:Vehicle
+-(void)shoot;
+@end
+
+Ship * s =[[Ship alloc]init];
+[s shoot];
+[s move];
+
+Vehicle * v=s;
+[v move];
+[v shoot];		//编译错误，因为vehicle不存在shoot方法
+
+id obj= anything;
+[obj shoot];	//可以编译，因为存在某个类包含同名方法，编译器无法确认obj运行时是什么类型，因此推断obj在运行时有可能执行shoot方法
+[obj somemethodnotbelongstoanyclass];	//编译错误，因为不存在任何一个类包含同名方法
+
+Ship * helloShip=(Ship*)@"hello";
+[helloShip shoot];	//可以编译，因为编译器认为NSSting是Ship，这时代码在执行时一定会崩溃!!
+[(id)helloShip shoot]	//可以编译，也会导致运行时崩溃!!
+```
+- id一般用在以下用途
+    - 需要混合使用多种class时，例如NSArray
+    - 在MVC中使用透明方式的通信
+    - 泛型
+- 如何判断id中保存的指针是什么类型？
+
+```
+if([obj isKindOfClass:[NSString class]])
+{
+  NSString *s =(NSString*)obj;
+}
+```
+- 在不确定obj类型的情况下，如何能准确的调用其方法？
+
+```
+if([obj respondsToSelector:@selector(shoot)])
+{
+  [obj shoot];	//经过判断，obj包含shoot方法
+}else if([obj respondsToSelector:@selector(shootAt:)])
+{
+  [obj shootAt:target];
+}
+
+```
+####Introspection
+
+Obj-C中，存在类似C#中反射的概念，即可以在程序运行时确定某个对象所包含的方法。
+在Obj-C中，`SEL`是一个type，可以通过`SEL`来定义selector
+
+```
+SEL shootSelector = @selector(shoot);
+SEL shootAtSelector = @selector(shootAt:)
+SEL moveToSelector = @selector(moveTo:withPenColor:);
+```
+当有了SEL之后，就可以让对象来执行他
+
+```
+// 对于所有NSObject对象，都可以通过performSelector来执行SEL
+[obj performSelector:shootSelector];
+[obj performSelector:shootAtSelector withObject:coordinate];
+
+//对于NSArray，可通过makeObjectsPerformSelector来执行SEL
+[array makeObjectsPerformSelector:shootSelector];
+[array makeObjectsPerformSelector:shootAtSelector withObject:target];
+
+// 对UIButton，相当于C#中的添加事件处理函数
+[button addTargent:self action:@selector(digitPressed:)];
+
+```
+
 
 ###对象的存储位置 Stack & Heap
 
