@@ -38,15 +38,29 @@ void SayHello();
 ```
 上面的第二个函数名可以理解为 **Add:** a **To:** b
 
-####方法的访问方式
+####方法类型（访问方式）
 - 实例方法
 实例方法（instance methods）通过类的实例调用。
+定义
+
+```
+- (void) instanceMethods;
+```
+
+调用
 
 ```
 [instanceofClass instanceMethods]
 ```
 - 类方法
 类方法（class methods）通过类名可直接调用。相当于C#、Java中类的静态方法。
+定义
+
+```
++ (void) classMethods;
+```
+
+调用
 
 ```
 [ClassName classMethods]
