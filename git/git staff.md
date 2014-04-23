@@ -54,5 +54,9 @@
 方法： git本地路径下创建 `.gitignore` 文件，文件中存储不想被git管理的文件路径和文件名，可使用通配符。
 例如：在ubuntu下，文本编辑器会自动创建一个 `文件名~` 的临时文件，可以在 `.gitignore` 中添加 `*.*~` 来过滤这类文件。
 
+## 为什么git commit 不能提交我的代码
+
+答：若git commit不能提交你的更改，则再执行那个 `git status` 并查看输出，是否所有的修改都在 `Changes not statged for commit` 下面，若是，则用 `git commit -a` 进行提交，这说明这些文件并未受到git的监控。
+
 
 
