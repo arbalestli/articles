@@ -37,7 +37,7 @@
 
 命令： `git log --oneline --decorate --color --graph`
 
-      zsh中缩写为 `glog`
+      zsh中缩写为 glog
 
 功能：将git库中所有历史更新显示出来，每次更新显示一行，包括部分hash、状态、更新说明。
 
