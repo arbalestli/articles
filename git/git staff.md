@@ -58,5 +58,9 @@
 
 答：若git commit不能提交你的更改，则再执行那个 `git status` 并查看输出，是否所有的修改都在 `Changes not statged for commit` 下面，若是，则用 `git commit -a` 进行提交，这说明这些文件并未受到git的监控。
 
+## 比较本地git库中代码和远程库代码的区别
+
+
+
 
 
