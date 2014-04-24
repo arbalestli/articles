@@ -68,17 +68,7 @@ Pro Git这本开源的电子书可以在[此处](http://git-scm.com/blog/2010/06
 
 答：若git commit不能提交你的更改，则再执行那个 `git status` 并查看输出，是否所有的修改都在 `Changes not statged for commit` 下面，若是，则用 `git commit -a` 进行提交，这说明这些文件并未受到git的监控。
 
-<<<<<<< HEAD
 ## clone 与 checkout 的区别
-
-## 比较本地git库中代码和远程库代码的区别
-=======
-## 比较本地git库中代码和远程库代码的区别
-
-
-
->>>>>>> FETCH_HEAD
 
 - `git clone` 不仅可以将远程源上的代码在本地重现，还可以将远程源的**完整历史记录**在本地重现。因此，只要某个源在某处有了一份clone后的版本，则即使该源受到不可逆的损害（如磁盘损坏或丢失），也可以通过他的clone的版本进行完整恢复。
 - `git checkout`则仅能讲远程源上的代码文件保存到本地。
-
